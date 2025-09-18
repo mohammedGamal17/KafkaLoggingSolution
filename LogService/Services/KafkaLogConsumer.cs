@@ -65,49 +65,6 @@ namespace LogService.Services
 
                     if (string.IsNullOrWhiteSpace(result?.Message?.Value)) continue;
                     await ProcessMessageAsync(result.Message.Value, stoppingToken);
-
-                    //try
-                    //{
-
-                    //    if (result?.Message?.Value != null)
-                    //    {
-                    //        try
-                    //        {
-                    //            var log = JsonSerializer.Deserialize<SerilogObj>(result.Message.Value);
-
-                    //            try
-                    //            {
-                    //                var logobj = JsonSerializer.Deserialize<LoggingMessage>(log.MessageTemplate);
-                    //                if (logobj != null)
-                    //                {
-
-                    //                    // Example: write to file
-                    //                    await File.AppendAllTextAsync("logs/consumed-logs.json",
-                    //                        JsonSerializer.Serialize(logobj) + Environment.NewLine,
-                    //                        stoppingToken);
-
-                    //                    await _elasticsearch.IndexLogAsync(logobj, stoppingToken);
-                    //                }
-                    //            }
-                    //            catch (Exception)
-                    //            {
-                    //                await File.AppendAllTextAsync("logs/System-logs.json",
-                    //                    JsonSerializer.Serialize(log) + Environment.NewLine,
-                    //                    stoppingToken);
-                    //            }
-                    //        }
-                    //        catch (Exception ex)
-                    //        {
-                    //            // Handle deserialization errors
-                    //        }
-
-                    //    }
-                    //}
-                    //catch (ConsumeException ex)
-                    //{
-                    //    _logger.LogError(ex, "Consume error");
-                    //}
-                
                 }
             }
             catch (OperationCanceledException)
