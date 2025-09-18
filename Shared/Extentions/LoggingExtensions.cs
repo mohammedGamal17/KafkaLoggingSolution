@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.Kafka;
 
@@ -50,6 +51,9 @@ namespace Shared
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.Console(new JsonFormatter())
+                .WriteTo.File(
+                new JsonFormatter(), $"logs/{DateTime.Now:yyyy}/{DateTime.Now:MM}/{DateTime.Now:dd}/Log.json",
+                restrictedToMinimumLevel: LogEventLevel.Information)
                 .WriteTo.Kafka(
                     bootstrapServers: bootstrapServers,
                     topic: topic
