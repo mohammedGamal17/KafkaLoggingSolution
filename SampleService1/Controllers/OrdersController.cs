@@ -25,11 +25,10 @@ namespace SampleService1.Controllers
                 CorrelationId = Guid.NewGuid().ToString(),
                 ServiceCode = "ORD",
                 ServiceName = "OrderService",
-                LogLevel = LoggingLevel.Error.ToSt(),
+                LogLevel = LoggingLevel.Warning.ToString(),
                 ErrorCode = "ORD-001",
                 Description = "Order failed due to timeout",
                 RelatedCorrelationIds = new List<string> { "RELATED-123", "RELATED-456" },
-                CreatedDate = DateTime.Now,
                 Data = "{ OrderId: 123 }"
             };
 

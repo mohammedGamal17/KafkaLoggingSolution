@@ -24,14 +24,13 @@ namespace SampleService2.Controllers
                 CorrelationId = Guid.NewGuid().ToString(),
                 ServiceCode = "PAY",
                 ServiceName = "PaymentService",
-                LogLevel = LoggingLevel.Success.ToSt(),
+                LogLevel = LoggingLevel.Info.ToString(),
                 ErrorCode = "PAY-001",
                 Description = "Payment success.",
-                CreatedDate = DateTime.UtcNow,
                 Data = new { Payment = 1999 }
             };
 
-            _logger.LogInformation( JsonSerializer.Serialize(log));
+            _logger.LogInformation(JsonSerializer.Serialize(log));
             //await _logger.SharedLogging(_serviceProvider, log);
             return Ok("Payment logged to Kafka");
         }
