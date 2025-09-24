@@ -1,3 +1,4 @@
+using SampleService1.Services;
 using Shared.Kafka.Messages;
 
 // SampleService1
@@ -24,7 +25,10 @@ builder.Services.AddKafkaProducer<EventMessage>();
 
 #region Consumer
 // 1. register consumer
+builder.Services.AddKafkaConsumer<PaymentStatus>(topic: "order-payments", groupId: "sample-service-1-group");
 // 2. register handler
+
+builder.Services.AddKafkaMessageHandler<OrderPaymentStatusHandler, PaymentStatus>();
 #endregion
 
 #endregion

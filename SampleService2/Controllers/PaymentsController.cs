@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
+using Shared.Kafka.Messages;
+using Shared.Kafka.Services.Producer.Base;
 namespace SampleService2.Controllers
 {
     [Route("api/[controller]")]
@@ -9,11 +11,13 @@ namespace SampleService2.Controllers
     {
         private readonly ILogger<PaymentsController> _logger;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IKafkaProducerService<PaymentStatus> _paymenStatus;
 
-        public PaymentsController(ILogger<PaymentsController> logger, IServiceProvider serviceProvider)
+        public PaymentsController(ILogger<PaymentsController> logger, IServiceProvider serviceProvider, IKafkaProducerService<PaymentStatus> paymenStatus)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
+            _paymenStatus = paymenStatus;
         }
 
         [HttpGet()]
@@ -32,6 +36,25 @@ namespace SampleService2.Controllers
 
             _logger.LogInformation(JsonSerializer.Serialize(log));
             //await _logger.SharedLogging(_serviceProvider, log);
+            await _paymenStatus.ProduceBatchAsync(new List<PaymentStatus>
+            {
+                new PaymentStatus
+                {
+                    OrderId = 123,
+                    Status = "Paid"
+                },
+                new PaymentStatus
+                {
+                    OrderId = 124,
+                    Status = "Paid"
+                },
+                new PaymentStatus
+                {
+                    OrderId = 125,
+                    Status = "Paid"
+                }
+            }, "order-payments");
+
             return Ok("Payment logged to Kafka");
         }
     }

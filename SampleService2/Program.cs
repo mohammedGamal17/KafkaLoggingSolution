@@ -19,6 +19,7 @@ builder.Services.AddGenericKafkaServices(builder.Configuration);
 #endregion
 
 #region Producer
+builder.Services.AddKafkaProducer<PaymentStatus>();
 #endregion
 
 #region Consumer
