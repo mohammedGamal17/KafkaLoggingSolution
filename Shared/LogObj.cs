@@ -12,4 +12,10 @@
         public object Data { get; set; }
         public List<string> RelatedCorrelationIds { get; set; } = new();
     }
+    public enum LoggingLevel
+    {
+        Info = 1,
+        Warning,
+        Critical
+    }
 }

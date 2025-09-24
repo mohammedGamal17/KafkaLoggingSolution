@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
-using Microsoft.Extensions.Options;
+﻿using Confluent.Kafka;
 
 namespace Shared
 {

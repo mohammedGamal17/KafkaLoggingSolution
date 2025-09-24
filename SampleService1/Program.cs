@@ -1,4 +1,6 @@
-using Shared;
+using Shared.Kafka.Messages;
+
+// SampleService1
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +10,24 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 
+#region Kafka
 
-builder.Services.AddSharedLogging(builder.Configuration);
+#region Configure
+//builder.Services.AddSharedLogging(builder.Configuration);
+builder.Services.AddGenericKafkaServices(builder.Configuration);
+#endregion
 
+#region Producer
+
+builder.Services.AddKafkaProducer<EventMessage>();
+#endregion
+
+#region Consumer
+// 1. register consumer
+// 2. register handler
+#endregion
+
+#endregion
 
 
 builder.Services.AddEndpointsApiExplorer();

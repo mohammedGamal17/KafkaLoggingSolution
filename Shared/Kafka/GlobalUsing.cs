@@ -1,0 +1,17 @@
+﻿global using System.Text.Json;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using Serilog;
+global using Serilog.Events;
+global using Serilog.Formatting.Json;
+global using Serilog.Sinks.Kafka;
+global using Shared.Kafka;
+global using Shared.Kafka.Factory;
+global using Shared.Kafka.Handlers.Base;
+global using Shared.Kafka.Messages;
+global using Shared.Kafka.Services.Consumer;
+global using Shared.Kafka.Services.Consumer.Base;
+global using Shared.Kafka.Services.Producer.Base;

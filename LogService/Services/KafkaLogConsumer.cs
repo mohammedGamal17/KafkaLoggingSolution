@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using LogService.Shared;
 using Microsoft.Extensions.Options;
 
@@ -79,7 +80,43 @@ namespace LogService.Services
             }
         }
 
+        private async Task EnsureTopicExistsAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+                var config = new AdminClientConfig
+                {
+                    BootstrapServers = _settings.BootstrapServers
+                };
 
+                using var adminClient = new AdminClientBuilder(config).Build();
+
+                // Check if topic exists
+                var metadata = adminClient.GetMetadata(TimeSpan.FromSeconds(10));
+                var topicExists = metadata.Topics.Any(t => t.Topic == _settings.Topic);
+
+                if (!topicExists)
+                {
+                    _logger.LogInformation("Creating Kafka topic: {Topic}", _settings.Topic);
+
+                    await adminClient.CreateTopicsAsync(new[]
+                    {
+                        new TopicSpecification
+                        {
+                            Name = _settings.Topic,
+                            NumPartitions = 3,
+                            ReplicationFactor = 1
+                        }
+                    });
+
+                    _logger.LogInformation("Topic {Topic} created successfully", _settings.Topic);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to ensure topic exists: {Topic}", _settings.Topic);
+            }
+        }
         private async Task ProcessMessageAsync(string message, CancellationToken token)
         {
             try
